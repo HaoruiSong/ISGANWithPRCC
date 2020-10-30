@@ -120,7 +120,7 @@ class Loss(loss._Loss):
 
 
     def id_related_loss(self, labels, outputs):
-        CrossEntropy_Loss = [self.cross_entropy_loss(output, labels) for output in outputs[1:1 + self.num_gran]]
+        CrossEntropy_Loss = [self.cross_entropy_loss(output, labels) for output in outputs[1]]  # outputs[1:1 + self.num_gran]
         return sum(CrossEntropy_Loss) / len(CrossEntropy_Loss)
 
     def cloth_related_loss(self, labels, outputs):
@@ -451,7 +451,6 @@ class Loss(loss._Loss):
         if opt.stage == 0:
             rgb_outputs = self.model.C(rgb)
             Rgb_CE = self.id_related_loss(labels, rgb_outputs)
-
 
             # ID_Error画图依赖
             IDcnt = 0

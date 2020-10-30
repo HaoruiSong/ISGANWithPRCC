@@ -4,7 +4,7 @@ import argparse
 parser = argparse.ArgumentParser(description='reid')
 
 parser.add_argument('--data_path',
-                    default="D:/re-ID-dataset/prcc_Cquery_Agallery_Singleshot/rgb",
+                    default="D:\\华工文件\\百步梯\\数据集\\prcc_Cquery_Agallery_Singleshot\\rgb\\market1501",
                     help='path of Market-1501-v15.09.15')
 
 parser.add_argument('--mode',
@@ -38,7 +38,7 @@ parser.add_argument("--batchid",
                     help='the batch for id')
 
 parser.add_argument("--batchimage",
-                    default=6,
+                    default=2,
                     type=int,
                     help='the batch of per id')
 
@@ -57,7 +57,7 @@ parser.add_argument("--num_cls",
                     help='# of classes')
 
 parser.add_argument("--feat_id",
-                    default=128, #--> 2048
+                    default=256,  # modified by Haorui 128->256 #--> 2048
                     type=int,
                     help='size of id features')
 

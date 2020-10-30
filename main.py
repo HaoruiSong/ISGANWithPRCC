@@ -235,6 +235,7 @@ def start():
             opt.start = 400
             opt.epoch = 600
 
+
         for epoch in range(opt.start + 1, opt.epoch + 1):
 
             print('\nepoch', epoch)

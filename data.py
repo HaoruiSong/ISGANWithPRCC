@@ -50,16 +50,16 @@ class Data():
         self.train_loader = dataloader.DataLoader(
             self.trainset, 
             sampler=RandomSampler(self.trainset, batch_id=opt.batchid,batch_image=opt.batchimage),
-            batch_size=opt.batchid * opt.batchimage, num_workers=8, pin_memory=True)
+            batch_size=opt.batchid * opt.batchimage, num_workers=0, pin_memory=True)  # 8
         self.train_loader_woEr = dataloader.DataLoader(
             self.trainset_woEr,
             sampler=RandomSampler(self.trainset_woEr, batch_id=opt.batchid, batch_image=opt.batchimage),
-            batch_size=opt.batchid * opt.batchimage, num_workers=8, pin_memory=True)
+            batch_size=opt.batchid * opt.batchimage, num_workers=0, pin_memory=True)  # 8
 
         self.test_loader = dataloader.DataLoader(
-            self.testset, batch_size=opt.batchtest, num_workers=8, pin_memory=True)
+            self.testset, batch_size=opt.batchtest, num_workers=0, pin_memory=True)  # 8
         self.query_loader = dataloader.DataLoader(
-            self.queryset, batch_size=opt.batchtest, num_workers=8, pin_memory=True)
+            self.queryset, batch_size=opt.batchtest, num_workers=0, pin_memory=True)  # 8
 
 class Market1501(dataset.Dataset):
     def __init__(self, data_path, dtype, rgb_trans = None, gray_trans = None, process_trans = None, test_trans = None):
