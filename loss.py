@@ -89,30 +89,26 @@ class Loss(loss._Loss):
 
         elif opt.stage == 1:
             self.set_parameter(self.model.C, train=False)
-            cloth_dict1 = self.model.C.get_modules(self.model.C.cloth_dict1())
-            cloth_dict2 = self.model.C.get_modules(self.model.C.cloth_dict2())
-            for i in range(np.shape(cloth_dict1)[0]):
-                self.set_parameter(cloth_dict1[i], train=True)
-            for i in range(np.shape(cloth_dict2)[0]):
-                self.set_parameter(cloth_dict2[i], train=True)
+            # cloth_dict1 = self.model.C.get_modules(self.model.C.cloth_dict1())
+            # cloth_dict2 = self.model.C.get_modules(self.model.C.cloth_dict2())
+            # for i in range(np.shape(cloth_dict1)[0]):
+            #     self.set_parameter(cloth_dict1[i], train=True)
+            # for i in range(np.shape(cloth_dict2)[0]):
+            #     self.set_parameter(cloth_dict2[i], train=True)
+            self.set_parameter(self.model.C.cloth_encoder, train=True)
             self.set_parameter(self.model.G, train=False)
             self.set_parameter(self.model.D, train=False)
             self.set_parameter(self.model.DC, train=True)
 
         elif opt.stage == 2:
             self.set_parameter(self.model.C, train=False)
-            nid_dict1 = self.model.C.get_modules(self.model.C.nid_dict1())
-            nid_dict2 = self.model.C.get_modules(self.model.C.nid_dict2())
-            # cloth_dict1 = self.model.C.get_modules(self.model.C.cloth_dict1())
-            # cloth_dict2 = self.model.C.get_modules(self.model.C.cloth_dict2())
-            for i in range(np.shape(nid_dict1)[0]):
-                self.set_parameter(nid_dict1[i], train=True)
-            for i in range(np.shape(nid_dict2)[0]):
-                self.set_parameter(nid_dict2[i], train=True)
-            # for i in range(np.shape(cloth_dict1)[0]):
-                # self.set_parameter(cloth_dict1[i], train=True)
-            # for i in range(np.shape(cloth_dict2)[0]):
-                # self.set_parameter(cloth_dict2[i], train=True)
+            # nid_dict1 = self.model.C.get_modules(self.model.C.nid_dict1())
+            # nid_dict2 = self.model.C.get_modules(self.model.C.nid_dict2())
+            # for i in range(np.shape(nid_dict1)[0]):
+            #     self.set_parameter(nid_dict1[i], train=True)
+            # for i in range(np.shape(nid_dict2)[0]):
+            #     self.set_parameter(nid_dict2[i], train=True)
+            self.set_parameter(self.model.C.nid_encoder, train=True)
             self.set_parameter(self.model.G, train=True)
             self.set_parameter(self.model.D, train=True)
             self.set_parameter(self.model.DC, train=False)

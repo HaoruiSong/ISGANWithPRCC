@@ -490,12 +490,12 @@ def multi_test():
 if __name__ == '__main__':
     opt.mode = 'train'
     # print(opt.device)
-    opt.stage = 0
-    start()
     # opt.mode = 'evaluate'
     # opt.weight = 'weights/isgan_stage3_400.pt'
     # start()
     # opt.mode = 'train'
+    # opt.stage = 0
+    # start()
     opt.stage = 1
     start()
     opt.stage = 2
