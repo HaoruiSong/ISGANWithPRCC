@@ -124,19 +124,19 @@ class Main():
 
         '''added by Haorui'''
         if opt.stage == 0 and epoch is not None:
-            if r[0] > opt.s0_best_r1:
+            if r[0] >= opt.s0_best_r1:
                 opt.s0_best_r1 = r[0]
                 opt.s0_best_epoch = epoch
         elif opt.stage == 1 and epoch is not None:
-            if r[0] > opt.s1_best_r1:
+            if r[0] >= opt.s1_best_r1:
                 opt.s1_best_r1 = r[0]
                 opt.s1_best_epoch = epoch
         elif opt.stage == 2 and epoch is not None:
-            if r[0] > opt.s2_best_r1:
+            if r[0] >= opt.s2_best_r1:
                 opt.s2_best_r1 = r[0]
                 opt.s2_best_epoch = epoch
         elif opt.stage == 3 and epoch is not None:
-            if r[0] > opt.s3_best_r1:
+            if r[0] >= opt.s3_best_r1:
                 opt.s3_best_r1 = r[0]
                 opt.s3_best_epoch = epoch
         '''added by Haorui'''
@@ -429,8 +429,7 @@ def start():
             if epoch % 25 == 0:
                 main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
                 if (opt.stage == 0 and opt.s0_best_epoch == epoch) or \
-                   (opt.stage == 1 and opt.s1_best_epoch == epoch) or \
-                   (opt.stage == 2 and opt.s2_best_epoch == epoch) or \
+                    opt.stage == 1 or opt.stage == 2 or \
                    (opt.stage == 3 and opt.s3_best_epoch == epoch):
                     os.makedirs(opt.save_path, exist_ok=True)
                     weight_save_path = opt.save_path + opt.name + \
@@ -496,8 +495,8 @@ if __name__ == '__main__':
     # opt.mode = 'train'
     # opt.stage = 0
     # start()
-    opt.stage = 1
-    start()
+    # opt.stage = 1
+    # start()
     opt.stage = 2
     start()
     opt.stage = 3

@@ -795,8 +795,8 @@ class ft_net(nn.Module):
         self.backbone = nn.Sequential(model_ft.conv1, model_ft.bn1, model_ft.relu, model_ft.maxpool)
         self.id = nn.Sequential(model_ft.layer1, model_ft.layer2, model_ft.layer3, model_ft.layer4, model_ft.avgpool)
         self.cloth = nn.Sequential(model_ft.layer1, model_ft.layer2, model_ft.layer3, model_ft.layer4, model_ft.avgpool)
-        self.classifier_id = ClassBlock(2048, class_num, dropout=0.5, relu=False)
-        self.classifier_cloth = ClassBlock(2048, class_num * 2, dropout=0.5, relu=False)
+        self.classifier_id = ClassBlock(512, class_num, dropout=0.5, relu=False)
+        self.classifier_cloth = ClassBlock(512, class_num * 2, dropout=0.5, relu=False)
         # remove the final downsample
         # self.model.layer4[0].downsample[0].stride = (1,1)
         # self.model.layer4[0].conv2.stride = (1,1)

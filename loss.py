@@ -249,7 +249,7 @@ class Loss(loss._Loss):
         imgr_loss = 0
         imgr_loss += self.l1_loss(identity_G[0], self.tanh(inputs))
         imgr_loss += self.l1_loss(identity_G[1], self.tanh(inputs))
-        if epoch > 50:
+        if epoch > 100:
             imgr_loss += self.l1_loss(identity_G[3], identity_G[4])
             imgr_loss += self.l1_loss(identity_G[6], identity_G[7])
 
