@@ -28,6 +28,10 @@ parser.add_argument('--lr',
                     default=2e-4, #2e-4
                     help='initial learning_rate')
 
+parser.add_argument('--prcc_lr',
+                    default=0.05, # original prcc paper use 0.1
+                    help='initial learning_rate for prcc_encoder')
+
 parser.add_argument('--lr_scheduler',
                     default=[300],
                     help='MultiStepLR,decay the learning rate')
