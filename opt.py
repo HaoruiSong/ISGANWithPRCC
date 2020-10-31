@@ -99,7 +99,7 @@ parser.add_argument("--save_path",
                     help='the path for saving weights')
 
 parser.add_argument("--name",
-                    default='/isgan',
+                    default='/isgan_prcc',
                     help='the additional path to identify')
 
 parser.add_argument("--start",
@@ -108,5 +108,46 @@ parser.add_argument("--start",
                     help='start epoch')
 
 parser.add_argument("--stage2_weight_path", default='/model_stage2_200.pt')
+
+'''added by Haorui'''
+parser.add_argument("--s0_best_r1",
+                    default=0,
+                    type=int,
+                    help='best rank1 ever seen at stage 0')
+
+parser.add_argument("--s0_best_epoch",
+                    default=-1,
+                    type=int,
+                    help='the epoch with the best r1 at stage 0')
+
+parser.add_argument("--s1_best_r1",
+                    default=0,
+                    type=int,
+                    help='best rank1 ever seen at stage 1')
+
+parser.add_argument("--s1_best_epoch",
+                    default=-1,
+                    type=int,
+                    help='the epoch with the best r1 at stage 1')
+parser.add_argument("--s2_best_r1",
+                    default=0,
+                    type=int,
+                    help='best rank1 ever seen at stage 2')
+
+parser.add_argument("--s2_best_epoch",
+                    default=-1,
+                    type=int,
+                    help='the epoch with the best r1 at stage 2')
+
+parser.add_argument("--s3_best_r1",
+                    default=0,
+                    type=int,
+                    help='best rank1 ever seen at stage 3')
+
+parser.add_argument("--s3_best_epoch",
+                    default=-1,
+                    type=int,
+                    help='the epoch with the best r1 at stage 3')
+'''added by Haorui'''
 
 opt = parser.parse_args()

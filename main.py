@@ -86,7 +86,7 @@ class Main():
         for i in range(len(self.errorcnt)):
             self.errors[i].append((self.errorcnt[i][1] - self.errorcnt[i][0]) / self.errorcnt[i][1])
 
-    def evaluate(self, save_path, epoch=0):
+    def evaluate(self, save_path, epoch=None):
 
         self.model.eval()
 
@@ -122,13 +122,38 @@ class Main():
 
         r, m_ap = rank(dist)
 
+        '''added by Haorui'''
+        if opt.stage == 0 and epoch is not None:
+            if r[0] > opt.s0_best_r1:
+                opt.s0_best_r1 = r[0]
+                opt.s0_best_epoch = epoch
+        elif opt.stage == 1 and epoch is not None:
+            if r[0] > opt.s1_best_r1:
+                opt.s1_best_r1 = r[0]
+                opt.s1_best_epoch = epoch
+        elif opt.stage == 2 and epoch is not None:
+            if r[0] > opt.s2_best_r1:
+                opt.s2_best_r1 = r[0]
+                opt.s2_best_epoch = epoch
+        elif opt.stage == 3 and epoch is not None:
+            if r[0] > opt.s3_best_r1:
+                opt.s3_best_r1 = r[0]
+                opt.s3_best_epoch = epoch
+        '''added by Haorui'''
+
+
         print('[Without Re-Ranking] mAP: {:.4f} rank1: {:.4f} rank3: {:.4f} rank5: {:.4f} rank10: {:.4f} rank20:{:.4f}'
               .format(m_ap, r[0], r[2], r[4], r[9], r[19]))
 
         with open(save_path, 'a') as f:
-            f.write(
-                '[Without Re-Ranking] epoch: {:} mAP: {:.4f} rank1: {:.4f} rank3: {:.4f} rank5: {:.4f} rank10: {:.4f} rank20:{:.4f}\n'
-                    .format(epoch, m_ap, r[0], r[2], r[4], r[9], r[19]))
+            if epoch is not None:
+                f.write(
+                    '[Without Re-Ranking] epoch: {:} mAP: {:.4f} rank1: {:.4f} rank3: {:.4f} rank5: {:.4f} rank10: {:.4f} rank20:{:.4f}\n'
+                        .format(epoch, m_ap, r[0], r[2], r[4], r[9], r[19]))
+            else:
+                f.write(
+                    '[Without Re-Ranking] mAP: {:.4f} rank1: {:.4f} rank3: {:.4f} rank5: {:.4f} rank10: {:.4f} rank20:{:.4f}\n'
+                        .format(m_ap, r[0], r[2], r[4], r[9], r[19]))
 
 
     def evaluate_multi_test(self, qf, save_path, test):
@@ -388,17 +413,33 @@ def start():
                 plt.close()
 
 
-            if epoch % 100 == 0:
-                os.makedirs(opt.save_path, exist_ok=True)
-                weight_save_path = opt.save_path + opt.name + \
-                                   '_stage{}_{:03d}.pt'.format(opt.stage, epoch)
-                main.save_model(weight_save_path)
+            # if epoch % 100 == 0:
+            #     os.makedirs(opt.save_path, exist_ok=True)
+            #     weight_save_path = opt.save_path + opt.name + \
+            #                        '_stage{}_{:03d}.pt'.format(opt.stage, epoch)
+            #     main.save_model(weight_save_path)
+            #     main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
+            # if opt.stage == 3 and epoch % 25 == 0:
+            #     weight_save_path = opt.save_path + opt.name + \
+            #                        '_stage{}_{:03d}.pt'.format(opt.stage, epoch)
+            #     main.save_model(weight_save_path)
+            #     main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
+
+            '''modified by Haorui'''
+            if epoch % 25 == 0:
                 main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
-            if opt.stage == 3 and epoch % 25 == 0:
-                weight_save_path = opt.save_path + opt.name + \
-                                   '_stage{}_{:03d}.pt'.format(opt.stage, epoch)
-                main.save_model(weight_save_path)
-                main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
+                if (opt.stage == 0 and opt.s0_best_epoch == epoch) or \
+                   (opt.stage == 1 and opt.s1_best_epoch == epoch) or \
+                   (opt.stage == 2 and opt.s2_best_epoch == epoch) or \
+                   (opt.stage == 3 and opt.s3_best_epoch == epoch):
+                    os.makedirs(opt.save_path, exist_ok=True)
+                    weight_save_path = opt.save_path + opt.name + \
+                                            '_stage{}_best.pt'.format(opt.stage)
+                    if os.path.exists(weight_save_path):
+                        os.remove(weight_save_path)
+                    main.save_model(weight_save_path)
+            '''modified by Haorui'''
+
 
 
     if opt.mode == 'evaluate':
@@ -456,6 +497,10 @@ if __name__ == '__main__':
     # start()
     # opt.mode = 'train'
     opt.stage = 1
+    start()
+    opt.stage = 2
+    start()
+    opt.stage = 3
     start()
     # opt.mode = 'evaluate'
     # opt.weight = 'weights/isgan_stage11_600.pt'
