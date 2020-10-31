@@ -73,11 +73,11 @@ class Market1501(dataset.Dataset):
         self.dtype = dtype
 
         if self.dtype == 'train':
-            self.data_path += '\\bounding_box_train'
+            self.data_path += '/bounding_box_train'
         elif self.dtype == 'test':
-            self.data_path += '\\bounding_box_test'
+            self.data_path += '/bounding_box_test'
         else:
-            self.data_path += '\\query'
+            self.data_path += '/query'
 
         self.imgs = [path for path in self.list_pictures(self.data_path) if self.id(path) != -1]
 
@@ -111,10 +111,10 @@ class Market1501(dataset.Dataset):
         :param file_path: unix style file path
         :return: person id
         """
-        return int(file_path.split('\\')[-1].split('_')[0])
+        return int(file_path.split('/')[-1].split('_')[0])
 
     def cloth(self, file_path):
-        c = int(file_path.split("\\")[-1].split('_')[1][1])
+        c = int(file_path.split("/")[-1].split('_')[1][1])
         if c == 0 or c == 1:
             return self._id2label[self.id(file_path)] * 2
         elif c == 2:
@@ -126,7 +126,7 @@ class Market1501(dataset.Dataset):
         :param file_path: unix style file path
         :return: camera id
         """
-        return int(file_path.split('\\')[-1].split('_')[1][1])
+        return int(file_path.split('/')[-1].split('_')[1][1])
 
     @property
     def ids(self):

@@ -4,7 +4,7 @@ import argparse
 parser = argparse.ArgumentParser(description='reid')
 
 parser.add_argument('--data_path',
-                    default="D:\\华工文件\\百步梯\\数据集\\prcc_Cquery_Agallery_Singleshot\\rgb\\market1501",
+                    default="/home/ubuntu/reid/0630/dataset/single_shot/rgb",
                     help='path of Market-1501-v15.09.15')
 
 parser.add_argument('--mode',
@@ -37,12 +37,12 @@ parser.add_argument('--lr_scheduler',
                     help='MultiStepLR,decay the learning rate')
 
 parser.add_argument("--batchid",
-                    default=2,
+                    default=4,
                     type=int,
                     help='the batch for id')
 
 parser.add_argument("--batchimage",
-                    default=2,
+                    default=6,
                     type=int,
                     help='the batch of per id')
 

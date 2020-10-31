@@ -4,7 +4,7 @@ def extract_feature(model, loader):
     features = torch.FloatTensor()
 
     for (rgb, labels) in loader:
-        ff = torch.FloatTensor(rgb.size(0), 1024).zero_()
+        ff = torch.FloatTensor(rgb.size(0), 2048).zero_()  # origin: 1024
         for i in range(2):
             if i == 1:
                 rgb = rgb.index_select(3, torch.arange(rgb.size(3) - 1, -1, -1).long())

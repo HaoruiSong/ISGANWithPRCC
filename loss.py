@@ -451,9 +451,6 @@ class Loss(loss._Loss):
         if opt.stage == 0:
             rgb_outputs = self.model.C(rgb)
             Rgb_CE = self.id_related_loss(labels, rgb_outputs)
-            '''added to test by Haorui'''
-            tmpD_loss, tmpG_loss = self.GAN_loss(rgb, rgb_outputs, labels, cloth_labels, epoch, batch)
-            '''added to test by Haorui'''
             # ID_Error画图依赖
             IDcnt = 0
             IDtotal = opt.batchid * opt.batchimage * self.num_gran

@@ -246,17 +246,17 @@ def start():
             opt.epoch = 400
 
         if opt.stage == 1:
-            main.load_model('weights/isgan_stage0_400.pt', 0)
+            main.load_model(opt.save_path + opt.name + '_stage0_best.pt', 0)
             opt.start = 0
             opt.epoch = 300
 
         if opt.stage == 2:
-            main.load_model(opt.save_path + '/isgan_stage1_300.pt', 200)
+            main.load_model(opt.save_path + opt.name + '_stage1_best.pt', 200)
             opt.start = 0
             opt.epoch = 200
 
         if opt.stage == 3:
-            main.load_model(opt.save_path + '/isgan_stage2_200.pt', 400)
+            main.load_model(opt.save_path + opt.name + '_stage2_best.pt', 400)
             opt.start = 400
             opt.epoch = 600
 
