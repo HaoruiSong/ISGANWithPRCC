@@ -301,7 +301,10 @@ class EncoderPRCCVer(nn.Module):
         list_mu, list_lv = self.nid_encoder(x)
         nid = [self.reparameterization(list_mu[i], list_lv[i]) for i in range(len(list_mu))]
         nid = torch.cat(nid, dim=1)
-        return id, feat_id_list, cloth_cls, cloth_feature, cloth, list_mu, list_lv, nid
+        return id\
+            , lg_id_list[0], lg_id_list[1], lg_id_list[2], lg_id_list[3], lg_id_list[4], \
+               lg_id_list[5], lg_id_list[6], lg_id_list[7],\
+               cloth_cls, cloth_feature, cloth, list_mu, list_lv, nid
 
 
 class Encoder(nn.Module):
