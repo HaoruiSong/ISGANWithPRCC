@@ -801,15 +801,26 @@ class ft_net(nn.Module):
         # self.model.layer4[0].downsample[0].stride = (1,1)
         # self.model.layer4[0].conv2.stride = (1,1)
 
-    def forward(self, x):
+    def forward(self, x, flag=-1):
         x = self.backbone(x)
-        x1 = self.id(x)
-        x2 = self.cloth(x)
-        x1 = x1.view(x1.size(0), x1.size(1))
-        x1, f = self.classifier_id(x1)
-        x2 = x2.view(x2.size(0), x2.size(1))
-        x2, f = self.classifier_cloth(x2)
-        return x1, x2
+        if flag == 0:
+            x1 = self.id(x)
+            x1 = x1.view(x1.size(0), x1.size(1))
+            x1, f = self.classifier_id(x1)
+            return x1
+        elif flag == 1:
+            x2 = self.id(x)
+            x2 = x2.view(x2.size(0), x2.size(1))
+            x2, f = self.classifier_cloth(x2)
+            return x2
+        else:
+            x1 = self.id(x)
+            x2 = self.cloth(x)
+            x1 = x1.view(x1.size(0), x1.size(1))
+            x1, f = self.classifier_id(x1)
+            x2 = x2.view(x2.size(0), x2.size(1))
+            x2, f = self.classifier_cloth(x2)
+            return x1, x2
 
 
 if __name__ == '__main__':

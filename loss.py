@@ -400,7 +400,7 @@ class Loss(loss._Loss):
         ############################################## G_loss for_identity##############################################
         for i in range(len(remain_identity)):
             D_fake = self.model.D(identity_G[i])
-            I_fake, C_fake = self.model.DC(identity_G[i])
+            I_fake = self.model.DC(identity_G[i], 0)
             REAL_LABEL = torch.ones_like(D_fake)
             D_fake_loss = self.bce_loss(D_fake, REAL_LABEL)
             I_fake_loss = self.cross_entropy_loss(I_fake, id_cls_label[i])
@@ -420,7 +420,7 @@ class Loss(loss._Loss):
         ############################################## G_loss_for_cloth ############################################
         for i in range(len(remain_cloth)):
             D_fake = self.model.D(cloth_G[i])
-            I_fale, C_fake = self.model.DC(cloth_G[i])
+            C_fake = self.model.DC(cloth_G[i], 1)
             REAL_LABEL = torch.ones_like(D_fake)
             D_fake_loss = self.bce_loss(D_fake, REAL_LABEL)
             C_fake_loss = self.cross_entropy_loss(C_fake, cloth_cls_label[i])
@@ -501,7 +501,10 @@ class Loss(loss._Loss):
 
         elif opt.stage == 2:
             rgb_outputs = self.model.C(rgb)
-            D_loss, G_loss = self.GAN_loss(rgb, rgb_outputs, labels, cloth_labels, epoch, batch)
+            if epoch <= 100:
+                D_loss, G_loss = self.GAN_loss(rgb, rgb_outputs, labels, cloth_labels, epoch, batch)
+            else:
+                D_loss, G_loss = self.GAN_loss_stage3(rgb, rgb_outputs, labels, cloth_labels, batch)
             KL_loss = self.KL_loss(rgb_outputs)
 
             loss_sum = G_loss + KL_loss / 500
@@ -516,6 +519,14 @@ class Loss(loss._Loss):
                    [[1, 1], [1, 1]]
 
         elif opt.stage == 3:
+            D_outputs_id, D_outputs_cloth = self.model.DC(rgb)
+            D_I = self.cross_entropy_loss(D_outputs_id, labels)
+            D_C = self.cross_entropy_loss(D_outputs_cloth, cloth_labels)
+            DC_loss = D_I + D_C
+            DC_loss.backward()
+            self.optimizer_DC.step()
+
+
             rgb_outputs = self.model.C(rgb)
             Rgb_CE = self.id_related_loss(labels, rgb_outputs)
             cloth_loss = self.cloth_related_loss(cloth_labels, rgb_outputs)
@@ -539,14 +550,6 @@ class Loss(loss._Loss):
                     cloth_label = cloth_labels[i]
                     if class_ == cloth_label:
                         Clothcnt += 1
-
-
-            D_outputs_id, D_outputs_cloth = self.model.DC(rgb)
-            D_I = self.cross_entropy_loss(D_outputs_id, labels)
-            D_C = self.cross_entropy_loss(D_outputs_cloth, cloth_labels)
-            DC_loss = D_I + D_C
-            DC_loss.backward()
-            self.optimizer_DC.step()
 
             D_loss, G_loss = self.GAN_loss_stage3(rgb, rgb_outputs, labels, cloth_labels, batch)
             KL_loss = self.KL_loss(rgb_outputs)
