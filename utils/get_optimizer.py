@@ -6,7 +6,7 @@ from opt import opt
 
 def get_optimizer(model):
     if (opt.stage == 1) or (opt.stage == 2) or opt.stage == 0:
-        param_groups = [{'params': model.C.parameters(), 'lr': opt.prcc_lr,'lr_mult': 1.0},
+        param_groups = [{'params': model.C.parameters(), 'lr_mult': 1.0},
                         {'params': model.G.parameters(), 'lr_mult': 1.0}]
         optimizer = Adam(param_groups, lr=opt.lr, weight_decay=5e-4, amsgrad=True)
 
@@ -32,9 +32,9 @@ def get_optimizer(model):
         #     param_groups.append({'params': nid_modules[i].parameters(), 'lr_mult': 0.01})
         # for i in range(np.shape(cloth_modules)[0]):
         #     param_groups.append({'params': cloth_modules[i].parameters(), 'lr_mult': 0.01})
-        param_groups = [{'params': model.C.id_encoder.parameters(), 'lr': opt.prcc_lr,'lr_mult': 1.0},
-                        {'params': model.C.cloth_encoder.parameters(), 'lr': opt.prcc_lr, 'lr_mult': 0.01},
-                        {'params': model.C.nid_encoder.parameters(), 'lr': opt.prcc_lr, 'lr_mult': 0.01},
+        param_groups = [{'params': model.C.id_encoder.parameters(), 'lr_mult': 1.0},
+                        {'params': model.C.cloth_encoder.parameters(), 'lr_mult': 0.01},
+                        {'params': model.C.nid_encoder.parameters(), 'lr_mult': 0.01},
                         {'params': model.G.parameters(), 'lr_mult': 0.01}]
 
         optimizer = Adam(param_groups, lr=opt.lr, weight_decay=5e-4, amsgrad=True)

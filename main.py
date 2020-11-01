@@ -46,7 +46,7 @@ class Main():
         self.model.train()
 
         self.x.append(epoch)
-        self.y2batch = [[], [], [], [], []]
+        self.y2batch = [[], [], [], [], [], [], []]
         self.errorcnt = [[0, 0], [0, 0]]
 
         for batch, (rgb, cloth, labels) in enumerate(self.train_loader):
@@ -224,6 +224,13 @@ class Main():
             state_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict.keys()}
             model_dict.update(state_dict)
             self.model.DC.load_state_dict(model_dict, strict=False)
+        if opt.stage == 2:
+            checkpoint = torch.load('weights/isgan_prcc_stage0_best.pt')
+            pretrained_dict = checkpoint['model_C']
+            model_dict = self.model.C.id_encoder.state_dict()
+            state_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict.keys()}
+            model_dict.update(state_dict)
+            self.model.C.id_encoder.load_state_dict(model_dict, strict=False)
         if opt.stage == 3:
             self.model.G.load_state_dict(checkpoint['model_G'])
             self.model.D.load_state_dict(checkpoint['model_D'])
@@ -426,8 +433,9 @@ def start():
             #     main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
 
             '''modified by Haorui'''
-            if epoch % 50 == 0:
-                main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
+            if epoch % 25 == 0:
+                if opt.stage == 0 or opt.stage == 3:
+                    main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
                 if  opt.stage == 0 or \
                     opt.stage == 1 or opt.stage == 2 or \
                    (opt.stage == 3 and opt.s3_best_epoch == epoch):
@@ -493,14 +501,14 @@ if __name__ == '__main__':
     # opt.weight = 'weights/isgan_stage3_400.pt'
     # start()
     # opt.mode = 'train'
-    opt.stage = 0
-    start()
+    # opt.stage = 0
+    # start()
     # opt.stage = 1
     # start()
-    # opt.stage = 2
-    # start()
-    # opt.stage = 3
-    # start()
+    opt.stage = 2
+    start()
+    opt.stage = 3
+    start()
     # opt.mode = 'evaluate'
     # opt.weight = 'weights/isgan_stage11_600.pt'
     # start()
