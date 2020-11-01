@@ -243,7 +243,7 @@ def start():
 
         if opt.stage == 0:
             opt.start = 0
-            opt.epoch = 400
+            opt.epoch = 300
 
         if opt.stage == 1:
             main.load_model(opt.save_path + opt.name + '_stage0_best.pt', 0)
@@ -426,9 +426,9 @@ def start():
             #     main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
 
             '''modified by Haorui'''
-            if epoch % 25 == 0:
+            if epoch % 50 == 0:
                 main.evaluate(opt.save_path + opt.name + '_accr.txt', epoch)
-                if (opt.stage == 0 and opt.s0_best_epoch == epoch) or \
+                if  opt.stage == 0 or \
                     opt.stage == 1 or opt.stage == 2 or \
                    (opt.stage == 3 and opt.s3_best_epoch == epoch):
                     os.makedirs(opt.save_path, exist_ok=True)
@@ -493,14 +493,14 @@ if __name__ == '__main__':
     # opt.weight = 'weights/isgan_stage3_400.pt'
     # start()
     # opt.mode = 'train'
-    # opt.stage = 0
-    # start()
+    opt.stage = 0
+    start()
     # opt.stage = 1
     # start()
-    opt.stage = 2
-    start()
-    opt.stage = 3
-    start()
+    # opt.stage = 2
+    # start()
+    # opt.stage = 3
+    # start()
     # opt.mode = 'evaluate'
     # opt.weight = 'weights/isgan_stage11_600.pt'
     # start()
